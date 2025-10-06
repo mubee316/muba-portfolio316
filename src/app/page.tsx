@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Github,
   Linkedin,
@@ -11,14 +11,13 @@ import {
   Code,
   Palette,
   Zap,
-  Globe,
   ChevronDown,
   Menu,
   X,
 } from "lucide-react";
 import { useRef } from "react";
 import { useFollowPointerDebug } from "@/use-folow-pointer";
-import { FaReact, FaTypescript } from "react-icons/fa";
+import { FaReact } from "react-icons/fa";
 import { SiFigma, SiGit, SiJavascript, SiMongodb, SiMysql, SiNextdotjs, SiNodedotjs, SiTailwindcss, SiTypescript } from "react-icons/si";
 
 const Portfolio = () => {
@@ -29,7 +28,7 @@ const Portfolio = () => {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const typingTexts = ["Hi, I'm Mubarak Olalekan", "I'm a Software Engineer"];
+  const typingTexts = useMemo(() => ["Hi, I'm Mubarak Olalekan", "I'm a Software Engineer"], []);
 
   const cursorRef = useRef(null);
   const { x, y } = useFollowPointerDebug(cursorRef);

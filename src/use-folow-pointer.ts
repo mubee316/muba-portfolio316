@@ -1,4 +1,4 @@
-import { useState, RefObject, useEffect } from "react";
+import { RefObject, useEffect } from "react";
 import { useMotionValue, useSpring } from "framer-motion";
 
 const spring = { damping: 50, stiffness: 150, restDelta: 0.001 };
@@ -62,7 +62,7 @@ export function useFollowPointerDebug(ref: RefObject<HTMLElement>) {
       console.log('Cleaning up event listener');
       window.removeEventListener("mousemove", handlePointerMove);
     };
-  }, [xPoint, yPoint]);
+  }, [xPoint, yPoint, ref]);
 
   return { x, y };
 }
