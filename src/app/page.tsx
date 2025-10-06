@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, RefObject } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -18,7 +18,17 @@ import {
 import { useRef } from "react";
 import { useFollowPointerDebug } from "@/use-folow-pointer";
 import { FaReact } from "react-icons/fa";
-import { SiFigma, SiGit, SiJavascript, SiMongodb, SiMysql, SiNextdotjs, SiNodedotjs, SiTailwindcss, SiTypescript } from "react-icons/si";
+import {
+  SiFigma,
+  SiGit,
+  SiJavascript,
+  SiMongodb,
+  SiMysql,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiTailwindcss,
+  SiTypescript,
+} from "react-icons/si";
 
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,10 +38,13 @@ const Portfolio = () => {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const typingTexts = useMemo(() => ["Hi, I'm Mubarak Olalekan", "I'm a Software Engineer"], []);
+  const typingTexts = useMemo(
+    () => ["Hi, I'm Mubarak Olalekan", "I'm a Software Engineer"],
+    []
+  );
 
-  const cursorRef = useRef(null);
-  const { x, y } = useFollowPointerDebug(cursorRef);
+ const cursorRef = useRef<HTMLDivElement>(null);
+  const { x, y } = useFollowPointerDebug(cursorRef as RefObject<HTMLElement>);
 
   // Remove this stray return, as it breaks the component rendering
   // return <motion.div ref={ref} className="box" style={{ x, y }} />;
@@ -39,7 +52,7 @@ const Portfolio = () => {
   const frontendTech = [
     {
       name: "React",
-      icon: <FaReact className="text-blue-600" /> ,
+      icon: <FaReact className="text-blue-600" />,
       proficiency: 5,
       level: "Expert",
       experience: "3+ years",
@@ -141,7 +154,21 @@ const Portfolio = () => {
       description: "RESTful APIs, GraphQL, and third-party integrations",
     },
   ];
-  const TechCard = ({ tech, index }) => (
+  type Tech = {
+    name: string;
+    icon: React.ReactNode;
+    proficiency: number;
+    level: string;
+    experience: string;
+    description: string;
+  };
+
+  interface TechCardProps {
+    tech: Tech;
+    index: number;
+  }
+
+  const TechCard: React.FC<TechCardProps> = ({ tech, index }) => (
     <div
       className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 text-center group cursor-pointer border border-gray-100"
       style={{ animationDelay: `${index * 0.1}s` }}
@@ -205,19 +232,22 @@ const Portfolio = () => {
     },
     {
       title: "LinkBites",
-      description: "A web app that shortens URLs, generates QR codes, and tracks analytics.",
+      description:
+        "A web app that shortens URLs, generates QR codes, and tracks analytics.",
       tech: ["typescript", "API", "TailwindCSS"],
       link: "https://mubarak-pro.vercel.app/",
     },
     {
       title: "Fit-Track AI",
-      description: "Built a fitness web app that generates personalized workouts and nutrition plans, with an AI-powered chatbot for fitness tips.- Features API integrations for dynamic content and user tracking.",
+      description:
+        "Built a fitness web app that generates personalized workouts and nutrition plans, with an AI-powered chatbot for fitness tips.- Features API integrations for dynamic content and user tracking.",
       tech: ["React.js", "API Integration", "TailwindCSS"],
       link: "https://github.com/mubee316/fitness-padi",
     },
     {
       title: "Notion Test",
-      description: "A project that integrates with Notion API to manage images and search output.",
+      description:
+        "A project that integrates with Notion API to manage images and search output.",
       tech: ["vue.js", "Notion API", "splash API", "TailwindCSS"],
       link: "https://notion-test-alpha.vercel.app/",
     },
@@ -282,7 +312,11 @@ const Portfolio = () => {
     return () => clearTimeout(timeout);
   }, [currentCharIndex, currentTextIndex, isDeleting, typingTexts]);
 
-  const scrollToSection = (sectionId) => {
+  interface ScrollToSectionFn {
+    (sectionId: string): void;
+  }
+
+  const scrollToSection: ScrollToSectionFn = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     setIsMenuOpen(false);
   };
